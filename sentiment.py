@@ -107,21 +107,21 @@ def main(argv):
                 else:
                     sentD[word]["negative"]+=1
         
-    print("dicts", sentD)
+    #print("dicts", sentD)
 
     with open(argv[3], "w") as f:
         f.write("Sentiment Dict")
         print(sentD,file=f)
     
-    print("freq p", positive_freq)
-    print("freq n",negative_freq)
+    #print("freq p", positive_freq)
+    #print("freq n",negative_freq)
 
 
     pos_dict = {word:sentD[word]['positive']/positive_freq for word in sentD.keys()}
     neg_dict = {word:sentD[word]['negative']/negative_freq for word in sentD.keys()}
 
-    print("pos dict", pos_dict)
-    print("neg dict", neg_dict)
+    #print("pos dict", pos_dict)
+    #print("neg dict", neg_dict)
 
     for keyP,valueP in pos_dict.items():
         if (valueP==0.0):
@@ -141,35 +141,62 @@ def main(argv):
         temp = math.log10(valL)
         log_dict[keyL]=abs(temp)
 
-    print("division", div)
+    with open(model, "a") as f:
+        f.write("Log Dict")
+        print(log_dict,file=f)
 
-    print("log dict", log_dict)
+    #print("division", div)
+
+    #print("log dict", log_dict)
+
+
+    ####################################################################
+
+    #######TESTING#######################
+    contentsTest=cleanFile(contentsTest)
+    #contentsTest = re.sub( r"\"", "",contentsTest)
+    contentsTestSplit = contentsTest.splitlines()
+    #print(contentsTestSplit)
+
+    listInstance=[]
+    for x in contentsTestSplit:
+        instanceId = re.findall('<instance id="([^"]*)"', x)
+        listInstance.append(instanceId)
+
+    #print(listInstance)
+
+    listInstanceFil = [x for x in listInstance if x != []]
+    print("instance list: ",listInstanceFil)
+
+    for i,line in enumerate(contentsTestSplit):
+        if line.startswith("<instance id="):
+            contentsTestSplit[i]=""
+
+    while("" in contentsTestSplit):
+        contentsTestSplit.remove("")
+
+    testWordsList = split_list(contentsTestSplit)
+
+    pat = "website/(.*)"
+    for i,lst in enumerate(testWordsList):
+        for index,word in enumerate(lst):
+            match=re.search(pat,word)
+
+            if match:
+                lst[index] = re.sub(r'website/(.*)', 'websiteLink', word)
+
+    print("testing", testWordsList)
+
+    
     
 
+    # miniLogDict ={}
 
-        
+    # count=0
+    # for index in range(0,len(testWordsList)): 
+    #     contentsTest=testWordsList[index]
 
-
-
-
-
- 
-
-    
-
-
-
-    ##########TESTING##############
-
-    # listInstance=[]
-    # for x in contentsTrainSplit:
-    #     instanceId = re.findall('<instance id="([^"]*)"', x)
-    #     listInstance.append(instanceId)
-
-    # #print(listInstance)
-
-    # listInstanceFil = [x for x in listInstance if x != []]
-    #print(listInstanceFil)
+    #print(contentsTestSplit)
 
     ######################################
     
