@@ -74,8 +74,82 @@ def main(argv):
             if match:
                 lst[index] = re.sub(r'website/(.*)', 'websiteLink', word)
  
+    #print(trainWordsList)
 
-    print(trainWordsList)
+    # for i2,list2 in enumerate(trainWordsList):
+    #     print(trainWordsList[i2])
+
+    sentD={}
+    count =0
+    for j in range(0,len(trainWordsList)):
+        contents = trainWordsList[j] #gets each tweet in the list of lists
+        currentSent = senses[j] #gets current sent associated with each tweet
+
+
+        # print(count, contents)
+        # print(currentSent)
+        # print(len(contents))
+        count+=1
+
+
+        for k in range(0,len(contents)): #traverses through the length of the tweet (which is the same as the length of the list because each word in a tweet is its own element)
+            word = contents[k] #each word in each tweet
+            #print(word)
+
+            if word not in sentD:
+                sentD[word]={}
+                sentD[word]["positive"]=0
+                sentD[word]["negative"]=0
+            
+            if word in sentD:
+                if currentSent=="positive":
+                    sentD[word]["positive"]+=1
+                else:
+                    sentD[word]["negative"]+=1
+        
+    print("dicts", sentD)
+
+    with open(argv[3], "w") as f:
+        f.write("Sentiment Dict")
+        print(sentD,file=f)
+    
+    print("freq p", positive_freq)
+    print("freq n",negative_freq)
+
+
+    pos_dict = {word:sentD[word]['positive']/positive_freq for word in sentD.keys()}
+    neg_dict = {word:sentD[word]['negative']/negative_freq for word in sentD.keys()}
+
+    print("pos dict", pos_dict)
+    print("neg dict", neg_dict)
+
+    for keyP,valueP in pos_dict.items():
+        if (valueP==0.0):
+            pos_dict[keyP]=0.1
+
+    for keyN,valueN in neg_dict.items():
+        if (valueN==0.0):
+            neg_dict[keyN]=0.1
+
+
+    div={x:float(pos_dict[x])/neg_dict[x] for x in neg_dict}
+
+    #log_dict={b:abs(math.log(b)) for b in div}
+
+    log_dict ={}
+    for keyL,valL in div.items():
+        temp = math.log10(valL)
+        log_dict[keyL]=abs(temp)
+
+    print("division", div)
+
+    print("log dict", log_dict)
+    
+
+
+        
+
+
 
 
 
