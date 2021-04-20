@@ -9,6 +9,8 @@ import pandas as pd
 import seaborn as sn
 import matplotlib.pyplot as plt
 
+#python3 scorer.py my-sentiment-answers.txt sentiment-test-key.txt > report.txt
+
 def main(argv):
     testFile = os.path.basename(sys.argv[1])
     keyFile = os.path.basename(sys.argv[2])
@@ -31,7 +33,7 @@ def main(argv):
             sent=match.group(1)
             sentTest.append(sent)
     
-    #print("sent test", sentTest)
+    print("sent test", sentTest)
 
     
     sentKey=[]
@@ -41,7 +43,7 @@ def main(argv):
         if match:
             sentK=match.group(1)
             sentKey.append(sentK)
-    #print("sent key", sentKey)
+    print("sent key", sentKey)
 
     acc = accuracy_score(sentKey, sentTest)
     print("Accuracy: ", acc *100)

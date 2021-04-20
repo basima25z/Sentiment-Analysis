@@ -46,6 +46,14 @@ def main(argv):
             else:
                 negative_freq+=1
 
+
+
+    if positive_freq>negative_freq:
+        max_sent_freq="positive"
+    else:
+        max_sent_freq="negative"
+
+    #print(max_sent_freq)
     
     #print(contentsTrainSplit) #for some reason if you print this here you get isn\ 't, but if you print this above matching its normal isn't
 
@@ -100,6 +108,31 @@ def main(argv):
                 sentD[word]={}
                 sentD[word]["positive"]=0
                 sentD[word]["negative"]=0
+
+                # if currentSent =="positive":
+                #     sentD[word]["positive"]+=1
+                # else:
+                #     sentD[word]["negative"]+=1
+
+
+
+            # if word not in sentD:
+            #     sentD[word]={}
+            #     if currentSent=="positive":
+            #         sentD[word][currentSent]=0
+            #     else:
+            #         sentD[word]["negative"]=0
+
+            #     # sentD[word]["positive"]=0
+            #     # sentD[word]["negative"]=0
+
+            # if word not in sentD:
+            #     if currentSent=="positive":
+            #         sentD[word]={}
+            #         sentD[word]["positive"] =1
+            #     else:
+            #         sentD[word]={}
+            #         sentD[word]["negative"]=1
             
             if word in sentD:
                 if currentSent=="positive":
@@ -217,23 +250,23 @@ def main(argv):
                 if keyL ==wordMatch: #if the word from the tweet matches the key in log_dict
                     miniLogDict[keyL] = valL #store it into a mini dictionary with the key and value
             
-
+        #print("mini log dict", miniLogDict)
         max_value = max(miniLogDict.values()) #get the highest max_value from the miniLogDict
         max_keys =[k for k, v in miniLogDict.items() if v == max_value] #gets the key associated with the max_value
         
         miniLogDict.clear()
 
-        if len(max_keys)>1:
+        if len(max_keys)>1: #black 15 posi, 15 neg, if there are multiple words in one tweet that have the same log value, choose one randomly 
             max_keys =random.sample(max_keys,1)
         
        
-
-        for keyMax,valMax in sentD.items():
-            for i in max_keys:
+        #print("Sent", sentD)
+        for keyMax,valMax in sentD.items(): #{'does': {'positive': 1, 'negative': 3}
+            for i in max_keys: #if key in sent d matches mini log dict key
                 if keyMax ==i: #if word max_key --> one word key --> angela
 
-                    max_num = max(valMax.values())
-                    max_sent = [k for k, v in valMax.items() if v ==max_num]
+                    max_num = max(valMax.values()) #pos 3, neg 4 --> 4 #gets the highest nested value
+                    max_sent = [k for k, v in valMax.items() if v ==max_num] #--> neg --># gets the key associated with highest nested value
 
                     '''
                     the word black appears 15 times as positive and 15 as negatives, so it just selects a random one
@@ -244,21 +277,22 @@ def main(argv):
                         max_sent= random.sample(max_sent,1)
 
                     instanceNum = listInstanceFil[count]
-                    # print(keyMax)
-                    # print("max", max_num, "sent", max_sent)
+                    #print(keyMax)
+                    #print("max", max_num, "sent", max_sent)
 
                     #print(listInstanceFil[count])
                     finSent = ", ".join(max_sent)
                     finNum= ", ".join(instanceNum)
                    
                    
+                    #accuracy 69.39655172413794
+                    #print('<answer instance="'+finNum+'" sentiment="'+finSent+'"/>')
 
-                    print('<answer instance="'+finNum+'" sentiment="'+finSent+'"/>')
+                    #Baseline Test = #68.96551724137932
+                    print('<answer instance="'+finNum+'" sentiment="'+max_sent_freq+'"/>')
                     count+=1
                     
     
-
-
 
 
 def cleanFile(fileName):
