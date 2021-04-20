@@ -80,16 +80,16 @@ def main(argv):
     #     print(trainWordsList[i2])
 
     sentD={}
-    count =0
+ 
     for j in range(0,len(trainWordsList)):
         contents = trainWordsList[j] #gets each tweet in the list of lists
         currentSent = senses[j] #gets current sent associated with each tweet
 
-
-        # print(count, contents)
-        # print(currentSent)
-        # print(len(contents))
-        count+=1
+        # matchLine = "websiteLink"
+        # for j in range(0,len(contents)):
+        #     matchF=re.search(matchLine,contents[j])
+        #     if matchF:
+        #         locate = j
 
 
         for k in range(0,len(contents)): #traverses through the length of the tweet (which is the same as the length of the list because each word in a tweet is its own element)
@@ -204,7 +204,6 @@ def main(argv):
 
 
     miniLogDict={}
-    time =0
     count =0
 
     for index in range(0,len(testWordsList)): 
@@ -217,8 +216,7 @@ def main(argv):
             for keyL, valL in log_dict.items(): 
                 if keyL ==wordMatch: #if the word from the tweet matches the key in log_dict
                     miniLogDict[keyL] = valL #store it into a mini dictionary with the key and value
-            #print(p)
-            #print(miniLogDict)
+            
 
         max_value = max(miniLogDict.values()) #get the highest max_value from the miniLogDict
         max_keys =[k for k, v in miniLogDict.items() if v == max_value] #gets the key associated with the max_value
@@ -228,14 +226,12 @@ def main(argv):
         if len(max_keys)>1:
             max_keys =random.sample(max_keys,1)
         
-        #print(max_keys)
+       
 
-        #print("listi", listInstanceFil)
-
-        #TODO: think about if positive and negative is both equal to 1?
         for keyMax,valMax in sentD.items():
             for i in max_keys:
                 if keyMax ==i: #if word max_key --> one word key --> angela
+
                     max_num = max(valMax.values())
                     max_sent = [k for k, v in valMax.items() if v ==max_num]
 
@@ -255,154 +251,11 @@ def main(argv):
                     finSent = ", ".join(max_sent)
                     finNum= ", ".join(instanceNum)
                    
-                    #print(finNum, finSent)
-                    #print(", ".join(instanceNum))
+                   
 
                     print('<answer instance="'+finNum+'" sentiment="'+finSent+'"/>')
-
-                    #print('<answer instance="',instanceNum[-2:2],'" sentiment="',max_sent,'"/>')
                     count+=1
                     
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                    # for k2,v2 in valMax.items():
-                    #     max_num = max(valMax.values())
-                    #     print("v2", v2)
-                        
-
-
-                    #print(keyMax,i)
-
-
-                    # max_sentList =[]
-                    # for k2,v2 in valMax.items(): #positive 3 --> k2,v2
-                    #     # max_num = max(valMax.values())
-                    #     # max_sent = [k for k, v in valMax.items() if v ==max_num]
-                    #     # sentFin = str(max_sent[0])
-                    #     # #print(k2,v2)
-                    #     # print(max_num,sentFin)
-
-                    #     itemMaxValue = max(valMax.items(), key=lambda x : x[1])
-                    #     print(itemMaxValue)
-
-                        #if v2=max_num:
-
-                        # max_sent = [k for k, v in valMax.items() if v ==max_num]
-                        # print(str(max_sent))
-
-                        #max_value_keys = [valMax[x] for x in valMax.keys if valMax[x] == max(valMax.values())]
-
-                        #print(max_num, max_value_keys)
-
-                        # max_num, max_sent = max(((v,k) for inner_d in valMax.values() for k,v in inner_d.items()))
-                        # print(max_num,max_sent)
-
-
-
-                        # for i in max_sent[::-1]: #list slicing gets rid of the instance id and sense id, now we just have the text we need
-                        #     max_sentList.append(max_sent)
-                        # print(max_sentList)
-                        #max_sentList.append(max_sent[0][0])
-                        # print("length max sent: ",len(max_sent))
-
-
-
-                        # #listInstance = [x for x in listInstance if x != []]
-                        # finNum = str(listInstance[count])
-                        # #print(finNum)
-                        # print(finNum,max_sent)
-                        # count = count+1
-                        
-                        #num = str(listInstanceFil[time])
-                        #print('<answer instance="',num,'" sentiment="',max_sent,'"/>')
-                        #time+=1
-
-                        # for m in listInstanceFil:
-                        #     okay = m
-                        #     print(okay)
-                        #     #print('<answer instance="'+okay+'" sentiment="'+max_sent+'"/>')
-                        #     print(m)
-
-
-                        #print(listInstanceFil[ok])
-                        #finAns = str(listInstanceFil[count])#[2:-2]
-                        #finSent =str(max_sent)[2:-2]
-                        #print("max sent",max_sent)
-                        #print("MAX: ",max_num, "sent: ", max_sent)
-                        #print("match: ", i, k2,v2)
-
-                        #print('<answer instance="',finAns,'" sentiment="',finSent,'"/>')
-                        #print('<answer instance="'+finAns+'" sentiment="'+finSent+'"/>')
-                    #print(max_sentList)
-    
-                
-
-        
-
-        #print(listInstanceFil[count])
-        # for keyMax, valMax in sentD.items():
-        #     for i in max_keys:
-        #         if keyMax == i:
-        #             max_val =0
-
-        #             for k2,v2 in valMax.items():
-        #                 print(listInstanceFil[count])
-                        # if v2>max_val: #if the value in nested dicts is greater than max_val 
-                        #     max_val =v2 #assigns the highest value in the nested dict to max_val
-                        #     finalSense = k2 #assigns the sense (product or phone) that correlates to the highest value to finalSense variable 
-                        #     finAns = str(listInstanceFil[count])#[2:-2] #uses list slicing get rid of [''] and str(list) to capture the line number in the dict
-                        #     #Print to STDOUT
-                        #     print('<answer instance="'+finAns+'" senseid="'+finalSense+'"/>')
-                        #     count = count+1 #uses as an iterator to iterate through listInstanceFil
-
-        # print(count)
-        # count+=1
-        #print("MAX: ",max_value,"MAX KEY: ",max_keys)
-        
-            
-            #print(wordMatch)
-            # keyWordMatch = p
-
-
-
-            # if (locateTest-1) >= 0:
-            # left_word_test = "L-1: " + contentsTest[locateTest-1] 
-            # #If key in log_dict (key = word (ex: telephonek_1)) matches the left_word that was captured
-            # #It adds the word and log value as the key and value into the miniLogDict
-            # #The purpose of the miniLogDict is to hold the word and the log if a match if found between the log_dict and the word captured from the testing file
-            # #The same process goes on for each rule in the next few if statements
-
-            # for keyL, valL in log_dict.items():
-            #     if keyL ==left_word_test: 
-            #         miniLogDict[keyL] = valL
-
-
-
-
-    
-
-    # miniLogDict ={}
-
-    # count=0
-    # for index in range(0,len(testWordsList)): 
-    #     contentsTest=testWordsList[index]
-
-    #print(contentsTestSplit)
-
-    ######################################
     
 
 
